@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Visualizador AR</title>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+  body {
+    margin: 0;
+    background: #222;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  header {
+    padding: 10px;
+    text-align: center;
+  }
+  select {
+    padding: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  model-viewer {
+    width: 100%;
+    height: 90vh;
+    background: #000;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Visualizador AR</h1>
+  <label for="modelSelect">Escolha o modelo:</label>
+  <select id="modelSelect">
+    <option value="911 1972.glb|911 1972.usdz">Porsche 911 1972</option>
+    <option value="718 1959.glb|718 1959.usdz">Porsche 718 1959</option>
+    <option value="panqueca.usdz|panqueca.usdz">Panqueca</option>
+    <option value="aviao.usdz|aviao.usdz">Avião</option>
+  </select>
+</header>
+
+<model-viewer 
+    id="viewer"
+    src="911 1972.glb" 
+    ios-src="911 1972.usdz" 
+    alt="Modelo 3D"
+    ar 
+    ar-modes="webxr scene-viewer quick-look" 
+    camera-controls 
+    auto-rotate 
+    background-color="#000">
+</model-viewer>
+
+<script>
+  const select = document.getElementById('modelSelect');
+  const viewer = document.getElementById('viewer');
+
+  select.addEventListener('change', () => {
+    const [glb, usdz] = select.value.split('|');
+    viewer.src = glb;
+    viewer.setAttribute('ios-src', usdz);
+  });
+</script>
+
+</body>
+</html>
