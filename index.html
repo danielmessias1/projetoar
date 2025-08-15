@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visualizador AR com Marcador</title>
+  <!-- A-Frame + AR.js -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar-nft.js"></script>
+  <style>
+    body { margin: 0; padding: 0; font-family: Arial, sans-serif; text-align: center; background: #f0f0f0; }
+    select { padding: 8px; font-size: 16px; margin: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Visualizador AR</h1>
+
+  <select id="modelSelector">
+    <option value="911_1972.glb">Porsche 911 (1972)</option>
+    <option value="718_1959.glb">Porsche 718 (1959)</option>
+    <option value="panqueca.glb">Panqueca</option>
+    <option value="aviao.glb">Avião</option>
+  </select>
+
+  <a-scene vr-mode-ui="enabled: false" embedded arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
+    <a-assets>
+      <a-asset-item id="911_1972" src="911_1972.glb"></a-asset-item>
+      <a-asset-item id="718_1959" src="718_1959.glb"></a-asset-item>
+      <a-asset-item id="panqueca" src="panqueca.glb"></a-asset-item>
+      <a-asset-item id="aviao" src="aviao.glb"></a-asset-item>
+    </a-assets>
+
+    <!-- Luz ambiente -->
+    <a-entity light="type: ambient; intensity: 0.8"></a-entity>
+    <a-entity light="type: directional; intensity: 0.8" position="1 2 1"></a-entity>
+
+    <!-- Marcador padrão Hiro -->
+    <a-marker type="pattern" url="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/data/data/patt.hiro" id="marker">
+      <!-- Aqui o modelo será inserido dinamicamente -->
+      <a-entity id="modelEntity" scale="0.1 0.1 0.1" position="0 0 0"></a-entity>
+    </a-marker>
+
+    <a-entity camera></a-entity>
+  </a-scene>
+
+  <script>
+    const modelSelector = document.getElementById('modelSelector');
+    const modelEntity = document.getElementById('modelEntity');
+
+    // Inicializa com o primeiro modelo
+    modelEntity.setAttribute('gltf-model', '#911_1972');
+
+    modelSelector.addEventListener('change', () => {
+      const selected = modelSelector.value;
+      const id = selected.replace('.glb', '');
+      modelEntity.setAttribute('gltf-model', `#${id}`);
+    });
+  </script>
+</body>
+</html>
